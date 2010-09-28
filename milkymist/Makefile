@@ -137,6 +137,6 @@ load: miniruby.bin
 	flterm --port /dev/ttyUSB0 --kernel $<
 
 clean:
-	rm -f $(COMMONOBJS) $(MINIRUBYOBJS) miniruby libruby-static.a main.o
+	rm -f $(COMMONOBJS) $(ENCOBJS) $(MINIRUBYOBJS) libruby-static.a miniruby miniruby.bin
 
 .PHONY: clean load
