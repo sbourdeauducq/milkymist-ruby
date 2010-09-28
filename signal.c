@@ -545,7 +545,11 @@ rb_disable_interrupt(void)
 #if USE_TRAP_MASK
     sigset_t mask;
     sigfillset(&mask);
+#ifdef RTEMS
+    sigdelset(&mask, SIGUSR2);
+#else
     sigdelset(&mask, SIGVTALRM);
+#endif
     sigdelset(&mask, SIGSEGV);
     pthread_sigmask(SIG_SETMASK, &mask, NULL);
 #endif
@@ -1112,7 +1116,7 @@ Init_signal(void)
 #ifdef SIGUSR1
     install_sighandler(SIGUSR1, sighandler);
 #endif
-#ifdef SIGUSR2
+#if defined(SIGUSR2) && !defined(RTEMS)
     install_sighandler(SIGUSR2, sighandler);
 #endif
 

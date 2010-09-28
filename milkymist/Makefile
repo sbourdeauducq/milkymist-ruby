@@ -16,7 +16,9 @@ COMMONOBJS =    array.o \
 		enum.o \
 		enumerator.o \
 		error.o \
+		encoding.o \
 		eval.o \
+		dln.o \
 		load.o \
 		proc.o \
 		file.o \
@@ -60,17 +62,40 @@ COMMONOBJS =    array.o \
 		vm.o \
 		vm_dump.o \
 		thread.o \
-		cont.o
+		cont.o \
+		crypt.o \
+		flock.o \
+		version.o
 
-all: libruby-static.a
+MINIRUBYOBJS = main.o dmyext.o miniprelude.o newline.o
+
+all: miniruby miniruby.bin
 
 %.o: ../%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+main.o: main.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+crypt.o: ../missing/crypt.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+	
+flock.o: ../missing/flock.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 libruby-static.a: $(COMMONOBJS)
-	$(AR) cru libruby-static.a $(COMMONOBJS)
+	$(AR) cru $@ $(COMMONOBJS)
+
+miniruby: libruby-static.a $(MINIRUBYOBJS)
+	$(LD) $(LDFLAGS) -o $@ $(MINIRUBYOBJS) -L. -lruby-static -lm -B$(RTEMS_MAKEFILE_PATH)/lib -specs bsp_specs -qrtems
+
+%.bin: %
+	$(OBJCOPY) -O binary $< $@
+
+load: miniruby.bin
+	flterm --port /dev/ttyUSB0 --kernel $<
 
 clean:
-	rm -f $(COMMONOBJS)
+	rm -f $(COMMONOBJS) $(MINIRUBYOBJS) miniruby libruby-static.a main.o
 
-.PHONY: clean
+.PHONY: clean load

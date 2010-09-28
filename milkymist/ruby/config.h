@@ -173,15 +173,17 @@
 #define FILE_COUNT _r
 #define FILE_READPTR _p
 #define SIZEOF_STRUCT_STAT_ST_INO SIZEOF_LONG
-#define STACK_GROW_DIRECTION 0
+#define STACK_GROW_DIRECTION -1
 #define HAVE_NANOSLEEP 1
 #define USE_ELF 1
-#define DLEXT_MAXLEN 3
-#define DLEXT ".so"
 #define HAVE_PTHREAD_H 1
 #define RUBY_LIB_VERSION_STYLE 3	/* full */
-#define RUBY_EXEC_PREFIX "/usr/local"
+#define RUBY_PLATFORM "lm32-rtems4.11"
+#define POSIX_SIGNAL 1
+#define RTEMS 1
+#define DLEXT_MAXLEN 3
+#define DLEXT ".so"
+#define RUBY_EXEC_PREFIX "/"
 #define RUBY_LIB_PREFIX RUBY_EXEC_PREFIX"/lib/ruby"
 #define RUBY_SITE_LIB RUBY_LIB_PREFIX"/site_ruby"
 #define RUBY_VENDOR_LIB RUBY_LIB_PREFIX"/vendor_ruby"
-#define RUBY_PLATFORM "lm32-rtems4.11"

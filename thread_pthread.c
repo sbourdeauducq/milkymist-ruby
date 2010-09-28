@@ -173,7 +173,11 @@ Init_native_thread(void)
     native_cond_initialize(&th->native_thread_data.sleep_cond);
     ruby_thread_set_native(th);
     native_mutex_initialize(&signal_thread_list_lock);
+#ifdef RTEMS
+    posix_signal(SIGUSR2, null_func);
+#else
     posix_signal(SIGVTALRM, null_func);
+#endif
 }
 
 static void
@@ -587,7 +591,11 @@ ubf_select_each(rb_thread_t *th)
 {
     thread_debug("ubf_select_each (%p)\n", (void *)th->thread_id);
     if (th) {
+#ifdef RTEMS
+	pthread_kill(th->thread_id, SIGUSR2);
+#else
 	pthread_kill(th->thread_id, SIGVTALRM);
+#endif
     }
 }
 
