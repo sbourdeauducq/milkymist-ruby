@@ -38,18 +38,10 @@ printf("main starting\n");
     }
 }
 
-char *example[] = {"ruby", "-e", "def fib(n)\n"
-"  if n<2\n"
-"    n\n"
-"  else\n"
-"    fib(n-2)+fib(n-1)\n"
-"  end\n"
-"end\n"
-"print(fib(20), \"\n\")\n"};
-//char *prout[] = {"ruby", "--copyright"};
+char *example[] = {"ruby"};
 rtems_task Init(rtems_task_argument argument)
 {
-	main(2, example);
+	main(0, example);
 }
 
 #define CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER
